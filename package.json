@@ -1,0 +1,47 @@
+{
+  "name": "railgun-react-explorer",
+  "version": "1.0.0",
+  "description": "Railgun React Explorer",
+  "homepage": ".",
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development"
+  },
+  "dependencies": {
+    "@railgun-community/shared-models": "^7.3.1",
+    "@railgun-community/wallet": "^10.1.2",
+    "@types/level-js": "^4.0.5",
+    "bignumber.js": "^9.1.2",
+    "browserify-zlib": "^0.2.0",
+    "ethers": "github:Railgun-Community/ethers.js#v6.7.10",
+    "https-browserify": "^1.0.0",
+    "level-js": "^6.1.0",
+    "localforage": "^1.10.0",
+    "process": "^0.11.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.27.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.4",
+    "vm-browserify": "^1.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.8",
+    "@babel/preset-env": "^7.25.8",
+    "@babel/preset-react": "^7.23.3",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "babel-loader": "^9.2.1",
+    "css-loader": "^7.1.2",
+    "postcss": "^8.4.47",
+    "postcss-loader": "^8.1.1",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^3.4.14",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.4",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  }
+}
