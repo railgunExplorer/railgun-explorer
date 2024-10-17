@@ -2,7 +2,17 @@ import { useState, useEffect } from "react";
 import { RailgunBalancesEvent, RailgunWalletInfo } from "@railgun-community/shared-models";
 import { initRailgun, queryWalletBalance } from "../services/railgun-web";
 
-export const useWalletHistory = () => {
+export interface WalletHistoryHookResult {
+  walletInfo: RailgunWalletInfo | undefined;
+  history: any[];
+  progress: number;
+  balances: RailgunBalancesEvent | undefined;
+  handleQueryWalletBalance: (viewingKey: string) => Promise<void>;
+  isLoading: boolean;
+  isInitialized: boolean;
+}
+
+export const useWalletHistory = (): WalletHistoryHookResult => {
   const [history, setHistory] = useState([]);
   const [balances, setBalances] = useState<RailgunBalancesEvent>();
   const [progress, setProgress] = useState(0);
@@ -10,15 +20,24 @@ export const useWalletHistory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  useEffect(() => {
-    initRailgun().then(() => setIsInitialized(true));
-  }, []);
-
   const handleQueryWalletBalance = async (viewingKey: string) => {
-    if (isLoading) return;
     setIsLoading(true);
-    await queryWalletBalance(viewingKey, setWalletInfo, setProgress, setBalances, setHistory);
-    setIsLoading(false);
+    
+    if (!isInitialized) {
+      await initRailgun().then(() => setIsInitialized(true));
+    }
+
+    if (isLoading) return;
+    try {
+      await queryWalletBalance(viewingKey, setWalletInfo, setProgress, setBalances, setHistory);
+    } catch (error) {
+      setIsInitialized(false);
+      await initRailgun();
+      setIsInitialized(true);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return {
@@ -31,4 +50,3 @@ export const useWalletHistory = () => {
     isInitialized,
   };
 };
-

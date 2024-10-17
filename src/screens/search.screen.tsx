@@ -8,11 +8,15 @@ const SearchScreen: React.FC = () => {
   const navigate = useNavigate();
   const { handleQueryWalletBalance } = useWalletHistoryContext();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!searchQuery) return;
-    handleQueryWalletBalance(searchQuery);
-    navigate(`/loading`);
+  const handleSearch = async (e: React.FormEvent) => {
+    try {
+      e.preventDefault();
+      if (!searchQuery) return;
+      await handleQueryWalletBalance(searchQuery);
+      navigate(`/search-result`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
