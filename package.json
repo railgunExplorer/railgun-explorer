@@ -10,6 +10,11 @@
   "dependencies": {
     "@railgun-community/shared-models": "^7.3.1",
     "@railgun-community/wallet": "^10.1.2",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.9",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@tailwindcss/typography": "^0.5.15",
     "@types/level-js": "^4.0.5",
     "bignumber.js": "^9.1.2",
     "browserify-zlib": "^0.2.0",
