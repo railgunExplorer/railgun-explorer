@@ -1,24 +1,10 @@
 import React, { createContext, useContext, ReactNode } from "react";
-import { useWalletHistory } from "../hooks/wallet-history.hook";
 import {
-  RailgunBalancesEvent,
-  RailgunWalletInfo,
-  TransactionHistoryItem,
-} from "@railgun-community/shared-models";
+  useWalletHistory,
+  WalletHistoryHookResult,
+} from "../hooks/wallet-history.hook";
 
-interface WalletHistoryContextType {
-  walletInfo: RailgunWalletInfo;
-  history: TransactionHistoryItem[];
-  progress: number;
-  balances: RailgunBalancesEvent;
-  handleQueryWalletBalance: (viewingKey: string) => Promise<void>;
-  isLoading: boolean;
-  isInitialized: boolean;
-}
-
-const WalletHistoryContext = createContext<
-  WalletHistoryContextType | undefined
->(undefined);
+const WalletHistoryContext = createContext<WalletHistoryHookResult>(undefined);
 
 export const useWalletHistoryContext = () => {
   const context = useContext(WalletHistoryContext);
@@ -30,11 +16,7 @@ export const useWalletHistoryContext = () => {
   return context;
 };
 
-interface WalletHistoryProviderProps {
-  children: ReactNode;
-}
-
-export const WalletHistoryProvider: React.FC<WalletHistoryProviderProps> = ({
+export const WalletHistoryProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const walletHistory = useWalletHistory();
