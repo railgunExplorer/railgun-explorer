@@ -30,6 +30,9 @@ const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
               <span className="ml-2 text-xl font-bold text-gray-900">
                 Railgun Explorer
               </span>
+              <span className="ml-2 text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                Beta
+              </span>
             </Link>
           </div>
           <div className="flex items-center">

@@ -19,7 +19,6 @@ import {
 import localforage from 'localforage';
 import Level from 'level-js'
 
-
 const createArtifactStore = () => {
     return new ArtifactStore(
         async (path) => {

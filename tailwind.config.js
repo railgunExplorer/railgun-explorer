@@ -8,7 +8,6 @@ module.exports = {
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
     require("@tailwindcss/aspect-ratio"),
-    require("@tailwindcss/line-clamp"),
     require("@tailwindcss/container-queries"),
     require("tailwindcss/plugin")(function ({ addUtilities }) {
       addUtilities({

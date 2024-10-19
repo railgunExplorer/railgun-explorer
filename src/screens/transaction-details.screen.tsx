@@ -80,7 +80,7 @@ const TransactionDetailsScreen: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="py-8">
       <h1 className="text-3xl font-bold mb-6">Transaction Details</h1>
       <div className="bg-white shadow-md rounded-lg p-6 mb-8">
         <div className="mb-4">

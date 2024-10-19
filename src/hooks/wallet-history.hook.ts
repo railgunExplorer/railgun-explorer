@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { RailgunBalancesEvent, RailgunWalletInfo } from "@railgun-community/shared-models";
 import { initRailgun, queryWalletBalance } from "../services/railgun-web";
 
@@ -20,14 +20,14 @@ export const useWalletHistory = (): WalletHistoryHookResult => {
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const handleQueryWalletBalance = async (viewingKey: string) => {
+  const handleQueryWalletBalance = useCallback(async (viewingKey: string) => {
+    if (isLoading) return;
     setIsLoading(true);
-    
+
     if (!isInitialized) {
       await initRailgun().then(() => setIsInitialized(true));
     }
 
-    if (isLoading) return;
     try {
       await queryWalletBalance(viewingKey, setWalletInfo, setProgress, setBalances, setHistory);
     } catch (error) {
@@ -37,8 +37,10 @@ export const useWalletHistory = (): WalletHistoryHookResult => {
       throw error;
     } finally {
       setIsLoading(false);
-    }
-  };
+      }
+    },
+    [isLoading, isInitialized]
+  );
 
   return {
     walletInfo,
