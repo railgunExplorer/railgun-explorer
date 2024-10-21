@@ -12,18 +12,27 @@ export default function SearchResultScreen() {
       balance: balance.amount.toString(10),
     })) ?? [];
 
-  const formattedTransactions =
-    history?.map((transaction) => ({
-      hash: transaction.txid,
-      method: transaction.category,
-      block: transaction.blockNumber,
-      age: transaction.timestamp,
+  const formattedNfts =
+    balances?.nftAmounts?.map((nft) => ({
+      token: nft.nftAddress,
+      balance: nft.amount.toString(10),
     })) ?? [];
+
+  const formattedTransactions =
+    history
+      ?.map((transaction) => ({
+        hash: transaction.txid,
+        method: transaction.category,
+        block: transaction.blockNumber,
+        age: transaction.timestamp,
+      }))
+      .sort((a, b) => b.age - a.age) ?? [];
 
   return (
     <div className="py-6">
       <AddressInfo address={walletInfo?.railgunAddress ?? "N/A"} />
-      <TokenBalances balances={formattedBalances} />
+      <TokenBalances title="ERC20 Balances" balances={formattedBalances} />
+      <TokenBalances title="NFT Balances" balances={formattedNfts} />
       <TransactionsTable transactions={formattedTransactions} />
     </div>
   );
