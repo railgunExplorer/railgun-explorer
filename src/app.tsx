@@ -9,11 +9,17 @@ import Layout from "./components/Layout/Layout";
 import SearchScreen from "./screens/search.screen";
 import SearchResultScreen from "./screens/search-result.screen";
 import TransactionDetailsScreen from "./screens/transaction-details.screen";
+import ViewingKeyHandler from "./components/ViewingKeyHandler";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <>
+        <Layout />
+        <ViewingKeyHandler />
+      </>
+    ),
     children: [
       { index: true, element: <SearchScreen /> },
       { path: "/search-result", element: <SearchResultScreen /> },

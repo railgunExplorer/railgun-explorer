@@ -6,16 +6,15 @@ interface TokenBalance {
 }
 
 interface TokenBalancesProps {
+  title: string;
   balances: TokenBalance[];
 }
 
-const TokenBalances: React.FC<TokenBalancesProps> = ({ balances }) => {
+const TokenBalances: React.FC<TokenBalancesProps> = ({ title, balances }) => {
   return (
     <div className="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
       <div className="px-4 py-5 sm:px-6">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">
-          Token Balances
-        </h3>
+        <h3 className="text-lg leading-6 font-medium text-gray-900">{title}</h3>
       </div>
       <div className="border-t border-gray-200">
         <dl>

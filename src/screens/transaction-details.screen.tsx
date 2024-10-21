@@ -48,10 +48,18 @@ const TokenTable: React.FC<{
                 <Td>{ellipsizeHash(token.tokenAddress)}</Td>
                 <Td>{token.amount.toString()}</Td>
                 {showSender && (
-                  <Td>{ellipsizeHash(token.senderAddress, 10)}</Td>
+                  <Td>
+                    {token.senderAddress
+                      ? ellipsizeHash(token.senderAddress, 10)
+                      : "Public address (Shield Operation)"}
+                  </Td>
                 )}
                 {showRecipient && (
-                  <Td>{ellipsizeHash(token.recipientAddress, 10)}</Td>
+                  <Td>
+                    {token.recipientAddress
+                      ? ellipsizeHash(token.recipientAddress, 10)
+                      : "--"}
+                  </Td>
                 )}
                 <Td>{token.balanceBucket || token.walletSource || "N/A"}</Td>
               </tr>
@@ -106,17 +114,21 @@ const TransactionDetailsScreen: React.FC = () => {
         </div>
       </div>
 
-      <TokenTable
-        title="Tokens Received"
-        tokens={transaction?.receiveERC20Amounts ?? []}
-        showSender
-      />
+      {transaction?.receiveERC20Amounts.length > 0 && (
+        <TokenTable
+          title="Tokens Received"
+          tokens={transaction?.receiveERC20Amounts ?? []}
+          showSender
+        />
+      )}
 
-      <TokenTable
-        title="Tokens Transferred"
-        tokens={transaction?.transferERC20Amounts ?? []}
-        showRecipient
-      />
+      {transaction?.transferERC20Amounts.length > 0 && (
+        <TokenTable
+          title="Tokens Transferred"
+          tokens={transaction?.transferERC20Amounts ?? []}
+          showRecipient
+        />
+      )}
 
       <div className="bg-white shadow overflow-hidden sm:rounded-lg mt-8">
         <div className="px-4 py-5 sm:px-6">

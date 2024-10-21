@@ -5,7 +5,8 @@
   "homepage": ".",
   "scripts": {
     "build": "webpack --mode production",
-    "start": "webpack serve --mode development"
+    "start": "webpack serve --mode development",
+    "build:serve": "npm run build && npx serve dist --single"
   },
   "dependencies": {
     "@railgun-community/shared-models": "^7.3.1",

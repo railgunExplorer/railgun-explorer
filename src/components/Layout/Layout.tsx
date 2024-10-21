@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from "../Navbar/Navbar";
 import { Outlet } from "react-router-dom";
-import ViewingKeyHandler from "../ViewingKeyHandler";
 
 const Layout: React.FC = () => {
   return (
@@ -10,7 +9,6 @@ const Layout: React.FC = () => {
       <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <Outlet />
       </main>
-      <ViewingKeyHandler />
     </div>
   );
 };

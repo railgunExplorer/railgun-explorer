@@ -15,10 +15,9 @@ const ViewingKeyHandler: React.FC = () => {
     const viewingKey = searchParams.get("viewingKey");
 
     if (viewingKey) {
-      const updateWalletInfo = handleQueryWalletBalance(viewingKey);
       searchParams.delete("viewingKey");
-      setSearchParams(searchParams);
-      await updateWalletInfo;
+      setSearchParams(searchParams, { replace: true });
+      await handleQueryWalletBalance(viewingKey);
 
       if (location.pathname === "/") {
         navigate("/search-result");
