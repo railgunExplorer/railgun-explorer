@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SearchInput from "./SearchInput";
 import ChainSelector from "./ChainSelector";
 
 interface NavbarProps {

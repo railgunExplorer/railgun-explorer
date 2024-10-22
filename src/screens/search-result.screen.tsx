@@ -9,7 +9,7 @@ export default function SearchResultScreen() {
   const formattedBalances =
     balances?.erc20Amounts?.map((balance) => ({
       token: balance.tokenAddress,
-      balance: balance.amount.toString(10),
+      balance: balance.amount.toString(),
     })) ?? [];
 
   const formattedNfts =
