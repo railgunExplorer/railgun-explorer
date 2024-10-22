@@ -28,6 +28,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.27.0",
     "stream-http": "^3.2.0",
+    "swr": "^2.2.5",
     "url": "^0.11.4",
     "vm-browserify": "^1.1.2"
   },
