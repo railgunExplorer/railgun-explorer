@@ -36,8 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
             </Link>
           </div>
           <div className="flex items-center">
-            {false && <ChainSelector />}
-            {false && showSearch && <SearchInput />}
+            <ChainSelector />
             <a
               href={process.env.REACT_APP_GITHUB_URL}
               target="_blank"
