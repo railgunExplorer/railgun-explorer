@@ -1,15 +1,13 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
-import {
-  SupportedNetworks,
-  SupportedNetworkValues,
-} from "../models/supported-networks";
 import { NETWORK_CONFIG, NetworkName } from "@railgun-community/shared-models";
+import { useRailgunConfigurations } from "./railgun-configurations.context";
+import { useConsumeQueryParam } from "../hooks/useConsumeQueryParam";
 
 type ChainSelectorContextType = {
-  selectedNetwork: SupportedNetworks;
-  defaultNetwork: SupportedNetworks;
-  options: { label: string; value: SupportedNetworks }[];
-  changeSelectNetwork: (network: SupportedNetworks) => void;
+  selectedNetwork: NetworkName;
+  defaultNetwork: NetworkName;
+  options: { label: string; value: NetworkName }[];
+  changeSelectNetwork: (network: NetworkName) => void;
 };
 
 const ChainSelectorContext = createContext<
@@ -21,16 +19,24 @@ const DEFAULT_NETWORK = NetworkName.Ethereum;
 export const ChainSelectorProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [selectedNetwork, setSelectedNetwork] =
-    useState<SupportedNetworks>(DEFAULT_NETWORK);
+  const { supportedNetworks } = useRailgunConfigurations();
+  const networkParam = useConsumeQueryParam<NetworkName>("network");
+  console.log("networkParam", networkParam);
+  const initialNetwork =
+    networkParam && supportedNetworks.includes(networkParam)
+      ? networkParam
+      : DEFAULT_NETWORK;
 
-  const options = SupportedNetworkValues.map((network) => ({
+  const [selectedNetwork, setSelectedNetwork] =
+    useState<NetworkName>(initialNetwork);
+
+  const options = supportedNetworks.map((network) => ({
     label: NETWORK_CONFIG[network].publicName,
     value: network,
   }));
 
-  const changeSelectNetwork = (network: SupportedNetworks) => {
-    if (SupportedNetworkValues.includes(network)) {
+  const changeSelectNetwork = (network: NetworkName) => {
+    if (supportedNetworks.includes(network)) {
       setSelectedNetwork(network);
     }
   };

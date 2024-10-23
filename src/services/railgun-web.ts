@@ -14,6 +14,7 @@ import {
   RailgunBalancesEvent,
   TransactionHistoryItem,
   RailgunWalletInfo,
+  NetworkName,
 } from "@railgun-community/shared-models";
 import localforage from "localforage";
 import Level from "level-js";
@@ -63,7 +64,7 @@ export const initializeEngine = async ({
 
 export const queryWalletBalance = async (
   shareableViewingKey: string,
-  network: SupportedNetworks,
+  network: NetworkName,
   onWalletInfoDecoded: (wallet: RailgunWalletInfo) => void,
   onUpdateProgress: (progress: number) => void,
   onUpdateBalance: (balances: RailgunBalancesEvent) => void,

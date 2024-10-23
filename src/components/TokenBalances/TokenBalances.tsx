@@ -20,7 +20,7 @@ const TokenBalances: React.FC<TokenBalancesProps> = ({ title, balances }) => {
         <dl>
           {balances.map((balance, index) => (
             <div
-              key={balance.token}
+              key={balance.token + index}
               className={`${
                 index % 2 === 0 ? "bg-gray-50" : "bg-white"
               } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}

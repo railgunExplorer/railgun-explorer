@@ -29,10 +29,10 @@ export const useWalletHistory = (): WalletHistoryHookResult => {
     proxyPoiAggregatorUrl,
     publicPoiAggregatorUrls,
   } = useRailgunConfigurations();
-  const { selectedNetwork, defaultNetwork } = useChainSelectorContext();
+  const { selectedNetwork } = useChainSelectorContext();
 
   const [selectedViewingKey, setSelectedViewingKey] = useState("");
-  const [currentNetwork, setCurrentNetwork] = useState(defaultNetwork);
+  const [currentNetwork, setCurrentNetwork] = useState(selectedNetwork);
   const [balances, setBalances] = useState<RailgunBalancesEvent>();
   const [walletInfo, setWalletInfo] = useState<RailgunWalletInfo>();
   const [isInitialized, setIsInitialized] = useState(false);
@@ -46,11 +46,7 @@ export const useWalletHistory = (): WalletHistoryHookResult => {
 
     const provider = networkProvidersConfig[selectedNetwork];
     setCurrentNetwork(selectedNetwork);
-    await loadProvider(
-      provider,
-      NetworkName[selectedNetwork as keyof typeof NetworkName],
-      1000 * 60 * 1000
-    );
+    await loadProvider(provider, selectedNetwork, 1000 * 60 * 1000);
 
     setIsInitialized(true);
   }, [
@@ -66,7 +62,7 @@ export const useWalletHistory = (): WalletHistoryHookResult => {
 
       await loadProvider(
         networkProvidersConfig[selectedNetwork],
-        NetworkName[selectedNetwork as keyof typeof NetworkName],
+        selectedNetwork,
         1000 * 60 * 1000
       );
 
