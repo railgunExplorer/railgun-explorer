@@ -15,8 +15,9 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: "bundle.js",
+    filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "dist"),
+    clean: true,
   },
   devtool: "source-map",
   module: {
