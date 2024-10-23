@@ -1,6 +1,11 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useWalletHistoryContext } from "../context/wallet-history.context";
+import { useChainSelectorContext } from "../context/chain-selector.context";
+import { formatToken } from "../utils/format-tokens";
+import { RailgunERC20Amount } from "@railgun-community/shared-models";
+import TokenSymbol from "../components/TokenSymbol/TokenSymbol";
+import RawBalanceWarning from "../components/RawBalanceWarning/RawBalanceWarning";
 
 const ellipsizeHash = (hash: string, visibleChars: number = 6) => {
   if (hash.length <= visibleChars * 2) return hash;
@@ -45,8 +50,15 @@ const TokenTable: React.FC<{
           <tbody className="bg-white divide-y divide-gray-200">
             {tokens.map((token, index) => (
               <tr key={index}>
-                <Td>{ellipsizeHash(token.tokenAddress)}</Td>
-                <Td>{token.amount.toString()}</Td>
+                <Td>
+                  <TokenSymbol balance={token} />
+                </Td>
+                <Td>
+                  <div className="flex items-center">
+                    <span>{token.amount.toString()}</span>
+                    {token.isUnknown && <RawBalanceWarning />}
+                  </div>
+                </Td>
                 {showSender && (
                   <Td>
                     {token.senderAddress
@@ -78,6 +90,7 @@ const TokenTable: React.FC<{
 const TransactionDetailsScreen: React.FC = () => {
   const { txId } = useParams<{ txId: string }>();
   const { history } = useWalletHistoryContext();
+  const { selectedNetwork } = useChainSelectorContext();
 
   const transaction = history.find((tx) => tx.txid === txId);
 
@@ -86,6 +99,18 @@ const TransactionDetailsScreen: React.FC = () => {
       typeof value === "bigint" ? value.toString() : value
     );
   };
+
+  const receiveERC20Amounts =
+    transaction?.receiveERC20Amounts?.map((token: RailgunERC20Amount) => ({
+      ...token,
+      ...formatToken(token, selectedNetwork),
+    })) ?? [];
+
+  const transferERC20Amounts =
+    transaction?.transferERC20Amounts?.map((token: RailgunERC20Amount) => ({
+      ...token,
+      ...formatToken(token, selectedNetwork),
+    })) ?? [];
 
   return (
     <div className="py-8">
@@ -114,18 +139,18 @@ const TransactionDetailsScreen: React.FC = () => {
         </div>
       </div>
 
-      {transaction?.receiveERC20Amounts.length > 0 && (
+      {receiveERC20Amounts.length > 0 && (
         <TokenTable
           title="Tokens Received"
-          tokens={transaction?.receiveERC20Amounts ?? []}
+          tokens={receiveERC20Amounts}
           showSender
         />
       )}
 
-      {transaction?.transferERC20Amounts.length > 0 && (
+      {transferERC20Amounts.length > 0 && (
         <TokenTable
           title="Tokens Transferred"
-          tokens={transaction?.transferERC20Amounts ?? []}
+          tokens={transferERC20Amounts}
           showRecipient
         />
       )}

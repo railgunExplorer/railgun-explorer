@@ -1,16 +1,19 @@
 import AddressInfo from "../components/AddressInfo/AddressInfo";
 import TokenBalances from "../components/TokenBalances/TokenBalances";
+import TokenBalancesERC20 from "../components/TokenBalances/TokenBalancesERC20";
 import TransactionsTable from "../components/TransactionsTable/TransactionsTable";
+import { useChainSelectorContext } from "../context/chain-selector.context";
 import { useWalletHistoryContext } from "../context/wallet-history.context";
+import { formatToken } from "../utils/format-tokens";
 
 export default function SearchResultScreen() {
   const { walletInfo, balances, history } = useWalletHistoryContext();
+  const { selectedNetwork } = useChainSelectorContext();
 
   const formattedBalances =
-    balances?.erc20Amounts?.map((balance) => ({
-      token: balance.tokenAddress,
-      balance: balance.amount.toString(),
-    })) ?? [];
+    balances?.erc20Amounts?.map((balance) =>
+      formatToken(balance, selectedNetwork)
+    ) ?? [];
 
   const formattedNfts =
     balances?.nftAmounts?.map((nft) => ({
@@ -31,7 +34,7 @@ export default function SearchResultScreen() {
   return (
     <div className="py-6">
       <AddressInfo address={walletInfo?.railgunAddress ?? "N/A"} />
-      <TokenBalances title="ERC20 Balances" balances={formattedBalances} />
+      <TokenBalancesERC20 title="ERC20 Balances" balances={formattedBalances} />
       <TokenBalances title="NFT Balances" balances={formattedNfts} />
       <TransactionsTable transactions={formattedTransactions} />
     </div>

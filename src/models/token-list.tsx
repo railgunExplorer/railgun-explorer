@@ -9,7 +9,7 @@ export type ERC20Info = {
   isBaseToken?: boolean;
 };
 
-export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
+export const DEFAULT_TOKENS_FOR_NETWORK: {
   [key in NetworkName]: ERC20Info[];
 } = {
   [NetworkName.Ethereum]: [
@@ -19,6 +19,14 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       address: NETWORK_CONFIG[NetworkName.Ethereum].baseToken.wrappedAddress,
       decimals: 18,
       isBaseToken: true,
+    },
+    {
+      name: "Frankencoin",
+      symbol: "ZCHF",
+      address: "0xB58E61C3098d85632Df34EecfB899A1Ed80921cB",
+      decimals: 18,
+      logoURI:
+        "https://assets.coingecko.com/coins/images/37150/standard/Coin_Logo_Frankencoin_1024px.png?1728679791",
     },
     {
       name: "RAIL",
@@ -187,8 +195,18 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       name: "Polygon",
       symbol: "MATIC",
       address: NETWORK_CONFIG[NetworkName.Polygon].baseToken.wrappedAddress,
+      logoURI:
+        "https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png?1624446912",
       decimals: 18,
       isBaseToken: true,
+    },
+    {
+      name: "Frankencoin",
+      symbol: "ZCHF",
+      address: "0x02567e4b14b25549331fcee2b56c647a8bab16fd",
+      decimals: 18,
+      logoURI:
+        "https://assets.coingecko.com/coins/images/37150/standard/Coin_Logo_Frankencoin_1024px.png?1728679791",
     },
     {
       name: "RAILPOLY",
@@ -263,6 +281,14 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
         "https://assets.coingecko.com/coins/images/325/large/Tether.png?1668148663",
       decimals: 6,
       address: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
+    },
+    {
+      name: "Frankencoin",
+      symbol: "ZCHF",
+      address: "0xB33c4255938de7A6ec1200d397B2b2F329397F9B",
+      decimals: 18,
+      logoURI:
+        "https://assets.coingecko.com/coins/images/37150/standard/Coin_Logo_Frankencoin_1024px.png?1728679791",
     },
     {
       name: "Dai Stablecoin",
