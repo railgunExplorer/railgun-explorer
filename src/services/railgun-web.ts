@@ -18,7 +18,6 @@ import {
 } from "@railgun-community/shared-models";
 import localforage from "localforage";
 import Level from "level-js";
-import { SupportedNetworks } from "../models/supported-networks";
 
 const createArtifactStore = () => {
   return new ArtifactStore(

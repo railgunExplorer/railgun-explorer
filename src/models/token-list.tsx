@@ -1,5 +1,4 @@
 import { NETWORK_CONFIG, NetworkName } from "@railgun-community/shared-models";
-import { SupportedNetworks } from "./supported-networks";
 
 export type ERC20Info = {
   address: string;
@@ -11,7 +10,7 @@ export type ERC20Info = {
 };
 
 export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
-  [name in SupportedNetworks]: ERC20Info[];
+  [key in NetworkName]: ERC20Info[];
 } = {
   [NetworkName.Ethereum]: [
     {
@@ -94,8 +93,6 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
         "https://assets.coingecko.com/coins/images/877/thumb/chainlink-new-logo.png?1547034700",
     },
   ],
-  // TODO: Add BNB Chain tokens
-  /*
   [NetworkName.BNBChain]: [
     {
       name: "Binance Coin",
@@ -185,7 +182,6 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       decimals: 18,
     },
   ],
-  */
   [NetworkName.Polygon]: [
     {
       name: "Polygon",
@@ -315,4 +311,12 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       address: "0xba5ddd1f9d7f570dc94a51479a000e3bce967196",
     },
   ],
+  // Only to meet the type requirement, please ignore
+  [NetworkName.EthereumSepolia]: [],
+  [NetworkName.PolygonAmoy]: [],
+  [NetworkName.Hardhat]: [],
+  [NetworkName.EthereumRopsten_DEPRECATED]: [],
+  [NetworkName.EthereumGoerli_DEPRECATED]: [],
+  [NetworkName.ArbitrumGoerli_DEPRECATED]: [],
+  [NetworkName.PolygonMumbai_DEPRECATED]: [],
 };
