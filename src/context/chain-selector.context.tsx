@@ -21,7 +21,7 @@ export const ChainSelectorProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const { supportedNetworks } = useRailgunConfigurations();
   const networkParam = useConsumeQueryParam<NetworkName>("network");
-  console.log("networkParam", networkParam);
+
   const initialNetwork =
     networkParam && supportedNetworks.includes(networkParam)
       ? networkParam

@@ -1,5 +1,4 @@
 import { NETWORK_CONFIG, NetworkName } from "@railgun-community/shared-models";
-import { SupportedNetworks } from "./supported-networks";
 
 export type ERC20Info = {
   address: string;
@@ -10,8 +9,8 @@ export type ERC20Info = {
   isBaseToken?: boolean;
 };
 
-export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
-  [name in SupportedNetworks]: ERC20Info[];
+export const DEFAULT_TOKENS_FOR_NETWORK: {
+  [key in NetworkName]: ERC20Info[];
 } = {
   [NetworkName.Ethereum]: [
     {
@@ -20,6 +19,14 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       address: NETWORK_CONFIG[NetworkName.Ethereum].baseToken.wrappedAddress,
       decimals: 18,
       isBaseToken: true,
+    },
+    {
+      name: "Frankencoin",
+      symbol: "ZCHF",
+      address: "0xB58E61C3098d85632Df34EecfB899A1Ed80921cB",
+      decimals: 18,
+      logoURI:
+        "https://assets.coingecko.com/coins/images/37150/standard/Coin_Logo_Frankencoin_1024px.png?1728679791",
     },
     {
       name: "RAIL",
@@ -94,8 +101,6 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
         "https://assets.coingecko.com/coins/images/877/thumb/chainlink-new-logo.png?1547034700",
     },
   ],
-  // TODO: Add BNB Chain tokens
-  /*
   [NetworkName.BNBChain]: [
     {
       name: "Binance Coin",
@@ -185,14 +190,23 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       decimals: 18,
     },
   ],
-  */
   [NetworkName.Polygon]: [
     {
       name: "Polygon",
       symbol: "MATIC",
       address: NETWORK_CONFIG[NetworkName.Polygon].baseToken.wrappedAddress,
+      logoURI:
+        "https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png?1624446912",
       decimals: 18,
       isBaseToken: true,
+    },
+    {
+      name: "Frankencoin",
+      symbol: "ZCHF",
+      address: "0x02567e4b14b25549331fcee2b56c647a8bab16fd",
+      decimals: 18,
+      logoURI:
+        "https://assets.coingecko.com/coins/images/37150/standard/Coin_Logo_Frankencoin_1024px.png?1728679791",
     },
     {
       name: "RAILPOLY",
@@ -269,6 +283,14 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       address: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
     },
     {
+      name: "Frankencoin",
+      symbol: "ZCHF",
+      address: "0xB33c4255938de7A6ec1200d397B2b2F329397F9B",
+      decimals: 18,
+      logoURI:
+        "https://assets.coingecko.com/coins/images/37150/standard/Coin_Logo_Frankencoin_1024px.png?1728679791",
+    },
+    {
       name: "Dai Stablecoin",
       symbol: "DAI",
       logoURI:
@@ -315,4 +337,12 @@ export const DEFAULT_SEARCH_TOKENS_FOR_NETWORK: {
       address: "0xba5ddd1f9d7f570dc94a51479a000e3bce967196",
     },
   ],
+  // Only to meet the type requirement, please ignore
+  [NetworkName.EthereumSepolia]: [],
+  [NetworkName.PolygonAmoy]: [],
+  [NetworkName.Hardhat]: [],
+  [NetworkName.EthereumRopsten_DEPRECATED]: [],
+  [NetworkName.EthereumGoerli_DEPRECATED]: [],
+  [NetworkName.ArbitrumGoerli_DEPRECATED]: [],
+  [NetworkName.PolygonMumbai_DEPRECATED]: [],
 };
