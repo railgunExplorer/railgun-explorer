@@ -11,9 +11,10 @@ import {
   unloadProvider,
 } from "../services/railgun-web";
 import { useChainSelectorContext } from "../context/chain-selector.context";
-import { useRailgunConfigurations } from "../context/railgun-configurations.context";
+import { useAppConfigurations } from "../context/app-configurations.context";
 
 export interface WalletHistoryHookResult {
+  selectedViewingKey: string;
   walletInfo: RailgunWalletInfo | undefined;
   history: any[];
   progress: number;
@@ -28,7 +29,7 @@ export const useWalletHistory = (): WalletHistoryHookResult => {
     networkProvidersConfig,
     proxyPoiAggregatorUrl,
     publicPoiAggregatorUrls,
-  } = useRailgunConfigurations();
+  } = useAppConfigurations();
   const { selectedNetwork } = useChainSelectorContext();
 
   const [selectedViewingKey, setSelectedViewingKey] = useState("");
@@ -117,6 +118,7 @@ export const useWalletHistory = (): WalletHistoryHookResult => {
   );
 
   return {
+    selectedViewingKey,
     walletInfo,
     history,
     progress,

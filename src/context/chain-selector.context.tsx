@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 import { NETWORK_CONFIG, NetworkName } from "@railgun-community/shared-models";
-import { useRailgunConfigurations } from "./railgun-configurations.context";
-import { useConsumeQueryParam } from "../hooks/useConsumeQueryParam";
+import { useAppConfigurations } from "./app-configurations.context";
 
 type ChainSelectorContextType = {
   selectedNetwork: NetworkName;
@@ -19,9 +18,9 @@ const DEFAULT_NETWORK = NetworkName.Ethereum;
 export const ChainSelectorProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const { supportedNetworks } = useRailgunConfigurations();
-  const networkParam = useConsumeQueryParam<NetworkName>("network");
+  const { supportedNetworks, getInitialQueryParam } = useAppConfigurations();
 
+  const networkParam = getInitialQueryParam<NetworkName>("network");
   const initialNetwork =
     networkParam && supportedNetworks.includes(networkParam)
       ? networkParam

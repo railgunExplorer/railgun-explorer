@@ -6,6 +6,7 @@ import { formatToken } from "../utils/format-tokens";
 import { RailgunERC20Amount } from "@railgun-community/shared-models";
 import TokenSymbol from "../components/TokenSymbol/TokenSymbol";
 import RawBalanceWarning from "../components/RawBalanceWarning/RawBalanceWarning";
+import { TitleHeaderWithShare } from "../components/SearchResultHeader";
 
 const ellipsizeHash = (hash: string, visibleChars: number = 6) => {
   if (hash.length <= visibleChars * 2) return hash;
@@ -113,9 +114,9 @@ const TransactionDetailsScreen: React.FC = () => {
     })) ?? [];
 
   return (
-    <div className="py-8">
-      <h1 className="text-3xl font-bold mb-6">Transaction Details</h1>
-      <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+    <div className="py-6">
+      <TitleHeaderWithShare title="Transaction Details" />
+      <div className="bg-white shadow-md rounded-lg p-4 mb-8">
         <div className="mb-4">
           <span className="font-semibold">Transaction ID:</span> {txId}
         </div>

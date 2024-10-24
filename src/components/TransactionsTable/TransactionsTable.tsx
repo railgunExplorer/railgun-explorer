@@ -35,33 +35,41 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
         </h3>
       </div>
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <Th>Txn Hash</Th>
-              <Th>Method</Th>
-              <Th>Block</Th>
-              <Th>Age</Th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {transactions.map((tx) => (
-              <tr key={tx.hash}>
-                <Td>
-                  <Link
-                    to={`/transaction/${tx.hash}`}
-                    className="text-blue-600 hover:text-blue-800 hover:underline"
-                  >
-                    {ellipsizeHash(tx.hash)}
-                  </Link>
-                </Td>
-                <Td>{tx.method}</Td>
-                <Td>{tx.block}</Td>
-                <Td>{tx.age}</Td>
+        {transactions.length > 0 ? (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <Th>Txn Hash</Th>
+                <Th>Method</Th>
+                <Th>Block</Th>
+                <Th>Age</Th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {transactions.map((tx) => (
+                <tr key={tx.hash}>
+                  <Td>
+                    <Link
+                      to={`/transaction/${tx.hash}`}
+                      className="text-blue-600 hover:text-blue-800 hover:underline"
+                    >
+                      {ellipsizeHash(tx.hash)}
+                    </Link>
+                  </Td>
+                  <Td>{tx.method}</Td>
+                  <Td>{tx.block}</Td>
+                  <Td>{tx.age}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="px-4 py-5 sm:px-6">
+            <p className="text-sm font-medium text-gray-500">
+              No transactions found.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

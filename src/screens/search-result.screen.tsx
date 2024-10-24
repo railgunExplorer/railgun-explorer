@@ -1,10 +1,12 @@
 import AddressInfo from "../components/AddressInfo/AddressInfo";
+import ShareButtonModal from "../components/ShareButtonModal";
 import TokenBalances from "../components/TokenBalances/TokenBalances";
 import TokenBalancesERC20 from "../components/TokenBalances/TokenBalancesERC20";
 import TransactionsTable from "../components/TransactionsTable/TransactionsTable";
 import { useChainSelectorContext } from "../context/chain-selector.context";
 import { useWalletHistoryContext } from "../context/wallet-history.context";
 import { formatToken } from "../utils/format-tokens";
+import { TitleHeaderWithShare } from "../components/SearchResultHeader";
 
 export default function SearchResultScreen() {
   const { walletInfo, balances, history } = useWalletHistoryContext();
@@ -33,6 +35,7 @@ export default function SearchResultScreen() {
 
   return (
     <div className="py-6">
+      <TitleHeaderWithShare title="Search Result" />
       <AddressInfo address={walletInfo?.railgunAddress ?? "N/A"} />
       <TokenBalancesERC20 title="ERC20 Balances" balances={formattedBalances} />
       <TokenBalances title="NFT Balances" balances={formattedNfts} />

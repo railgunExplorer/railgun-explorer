@@ -2,29 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useWalletHistoryContext } from "../../context/wallet-history.context";
 import { useNavigate, useLocation } from "react-router-dom";
 import LoadingModal from "../LoadingModal";
-import { useConsumeQueryParam } from "../../hooks/useConsumeQueryParam";
+import { useAppConfigurations } from "../../context/app-configurations.context";
 
 const ViewingKeyHandler: React.FC = () => {
   const { handleQueryWalletBalance, isLoading, isInitialized, progress } =
     useWalletHistoryContext();
+  const { getInitialQueryParam } = useAppConfigurations();
   const navigate = useNavigate();
   const location = useLocation();
   const [showLoadingModal, setShowLoadingModal] = useState(false);
-  const viewingKeyParam = useConsumeQueryParam("viewingKey");
 
   const handleViewingKey = async (viewingKey: string) => {
     await handleQueryWalletBalance(viewingKey);
-
     if (location.pathname === "/") {
       navigate("/search-result");
     }
   };
 
   useEffect(() => {
+    const viewingKeyParam = getInitialQueryParam<string>("viewingKey");
     if (viewingKeyParam) {
       handleViewingKey(viewingKeyParam);
     }
-  }, [viewingKeyParam]);
+  }, []);
 
   useEffect(() => {
     if (isLoading) {
