@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-export const useConsumeQueryParam = <T extends string | null>(
-  paramName: string
-) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+// For some reason, useSearchParams not always return the first query param.
+const urlParams = new URLSearchParams(window.location.search);
+const initialParams: Record<string, string | null> = {};
+urlParams.forEach((value, key) => {
+  initialParams[key] = value;
+});
 
-  const value = searchParams.get(paramName);
-  const [paramValue] = useState<T>(value as T);
+export const useConsumeQueryParams = () => {
+  const [, setSearchParams] = useSearchParams();
+  const [params, setParams] =
+    useState<Record<string, string | null>>(initialParams);
 
   useEffect(() => {
-    if (paramValue) {
-      searchParams.delete(paramName);
-      setSearchParams(searchParams, { replace: true });
-    }
-  }, [searchParams, setSearchParams, paramName, paramValue]);
+    setParams(initialParams);
 
-  return paramValue;
+    urlParams.forEach((_, key) => {
+      urlParams.delete(key);
+    });
+    setSearchParams(urlParams, { replace: true });
+  }, [setSearchParams]);
+
+  const getInitialQueryParam = (paramName: string): string | null => {
+    return params[paramName] || null;
+  };
+
+  return getInitialQueryParam;
 };

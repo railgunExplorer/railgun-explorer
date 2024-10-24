@@ -11,7 +11,7 @@ import {
   unloadProvider,
 } from "../services/railgun-web";
 import { useChainSelectorContext } from "../context/chain-selector.context";
-import { useRailgunConfigurations } from "../context/railgun-configurations.context";
+import { useAppConfigurations } from "../context/app-configurations.context";
 
 export interface WalletHistoryHookResult {
   walletInfo: RailgunWalletInfo | undefined;
@@ -28,7 +28,7 @@ export const useWalletHistory = (): WalletHistoryHookResult => {
     networkProvidersConfig,
     proxyPoiAggregatorUrl,
     publicPoiAggregatorUrls,
-  } = useRailgunConfigurations();
+  } = useAppConfigurations();
   const { selectedNetwork } = useChainSelectorContext();
 
   const [selectedViewingKey, setSelectedViewingKey] = useState("");

@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { WalletHistoryProvider } from "./context/wallet-history.context";
 import { ChainSelectorProvider } from "./context/chain-selector.context";
-import { RailgunConfigurationsProvider } from "./context/railgun-configurations.context";
+import { AppConfigurationsProvider } from "./context/app-configurations.context";
 import Layout from "./components/Layout/Layout";
 import SearchScreen from "./screens/search.screen";
 import SearchResultScreen from "./screens/search-result.screen";
@@ -15,14 +15,14 @@ import ViewingKeyHandler from "./components/ViewingKeyHandler";
 
 const App: React.FC = () => {
   return (
-    <RailgunConfigurationsProvider>
+    <AppConfigurationsProvider>
       <ChainSelectorProvider>
         <WalletHistoryProvider>
           <Layout />
           <ViewingKeyHandler />
         </WalletHistoryProvider>
       </ChainSelectorProvider>
-    </RailgunConfigurationsProvider>
+    </AppConfigurationsProvider>
   );
 };
 
