@@ -32,8 +32,10 @@ export default function SearchResultScreen() {
       .sort((a, b) => b.age - a.age) ?? [];
 
   return (
-    <div className="py-8">
-      <h1 className="text-3xl font-bold mb-6">Search Result</h1>
+    <div className="py-6">
+      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
+        Search Result
+      </h1>
       <AddressInfo address={walletInfo?.railgunAddress ?? "N/A"} />
       <TokenBalancesERC20 title="ERC20 Balances" balances={formattedBalances} />
       <TokenBalances title="NFT Balances" balances={formattedNfts} />

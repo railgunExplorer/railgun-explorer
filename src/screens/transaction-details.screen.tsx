@@ -113,8 +113,10 @@ const TransactionDetailsScreen: React.FC = () => {
     })) ?? [];
 
   return (
-    <div className="py-8">
-      <h1 className="text-3xl font-bold mb-6">Transaction Details</h1>
+    <div className="py-6">
+      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
+        Transaction Details
+      </h1>
       <div className="bg-white shadow-md rounded-lg p-4 mb-8">
         <div className="mb-4">
           <span className="font-semibold">Transaction ID:</span> {txId}

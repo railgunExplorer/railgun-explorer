@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
                   d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
-              <span className="ml-2 text-xl font-bold text-gray-900">
+              <span className="ml-2 text-xl font-bold text-gray-900 hidden sm:inline-block">
                 Railgun Explorer
               </span>
               <span className="ml-2 text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
