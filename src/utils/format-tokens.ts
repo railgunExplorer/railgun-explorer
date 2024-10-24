@@ -27,7 +27,7 @@ export const formatToken = (
 ): FormattedTokenBalance => {
   const defaultTokensInfo = DEFAULT_TOKENS_FOR_NETWORK[networkName];
   const tokenInfo = defaultTokensInfo.find(
-    (t) => t.address === token.tokenAddress
+    (t) => t.address.toLowerCase() === token.tokenAddress.toLowerCase()
   );
 
   if (!tokenInfo) {

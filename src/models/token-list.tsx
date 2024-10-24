@@ -225,11 +225,19 @@ export const DEFAULT_TOKENS_FOR_NETWORK: {
       decimals: 6,
     },
     {
+      name: "USD Coin (PoS)",
+      symbol: "USDC.e",
+      logoURI:
+        "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+      decimals: 6,
+    },
+    {
       name: "USD Coin",
       symbol: "USDC",
       logoURI:
         "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
-      address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+      address: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
       decimals: 6,
     },
     {
