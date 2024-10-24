@@ -14,6 +14,7 @@ import { useChainSelectorContext } from "../context/chain-selector.context";
 import { useAppConfigurations } from "../context/app-configurations.context";
 
 export interface WalletHistoryHookResult {
+  selectedViewingKey: string;
   walletInfo: RailgunWalletInfo | undefined;
   history: any[];
   progress: number;
@@ -117,6 +118,7 @@ export const useWalletHistory = (): WalletHistoryHookResult => {
   );
 
   return {
+    selectedViewingKey,
     walletInfo,
     history,
     progress,
