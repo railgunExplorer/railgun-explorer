@@ -4,7 +4,7 @@
   "description": "Railgun React Explorer",
   "homepage": ".",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && cd dist && zip -r ./dist.zip .",
     "start": "webpack serve --mode development",
     "build:serve": "npm run build && npx serve dist --single"
   },
