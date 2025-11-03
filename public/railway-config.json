@@ -1,0 +1,62 @@
+{
+  "publicPoiAggregatorUrls": ["https://poi-node.terminal-wallet.com/"],
+  "proxyPoiAggregatorUrl": "https://ppoi-agg.horsewithsixlegs.xyz",
+  "minVersionNumberIOS": "4.0.0",
+  "minVersionNumberAndroid": "4.0.0",
+  "minVersionNumberWeb": "1.0.0",
+  "wakuPubSubTopic": "/waku/2/railgun-broadcaster",
+  "additionalDirectPeers": [
+    "/dns4/waku.wecamefromapes.com/tcp/8000/wss/p2p/16Uiu2HAmATh6oki7ZCQEpCH2P9A1A2UXSRdVuU1hn9mzR3NKarPN",
+    "/dns4/zebra.horsewithsixlegs.xyz/tcp/8000/wss/p2p/16Uiu2HAm4LeP19jWXhQ6ayMX27vPYKGAo3WQeeFYrVDJ2nBi9gjv",
+    "/dns4/giraffe.horsewithsixlegs.xyz/tcp/8000/wss/p2p/16Uiu2HAm6EBg9G12QTbL4UbRGgRW7GnWzAghCZskgwahtPUT1Fvf"
+  ],
+  "wakuPeerDiscoveryTimeout": 30000,
+  "pollingInterval": 15000,
+  "proxyApiUrl": "https://api.fdi.network",
+  "proxyNftsApiUrl": "https://nfts.fdi.network",
+  "poiDocumentation": {
+    "railgunPOIDocUrl": "https://docs.railgun.org/wiki/assurance/private-proofs-of-innocence",
+    "railwayPOIDocUrl": "https://help.railway.xyz/private-proofs-of-innocence"
+  },
+  "defaultNetworkName": "Ethereum",
+  "availableNetworks": {
+    "Ethereum": {
+      "canSendPublic": true,
+      "canSendShielded": true,
+      "canShield": true,
+      "canUnshield": true,
+      "canSwapPublic": true,
+      "canSwapShielded": true,
+      "canRelayAdapt": true
+    },
+    "BNB_Chain": {
+      "canSendPublic": true,
+      "canSendShielded": true,
+      "canShield": true,
+      "canUnshield": true,
+      "canSwapPublic": true,
+      "canSwapShielded": true,
+      "canRelayAdapt": true
+    },
+    "Polygon": {
+      "canSendPublic": true,
+      "canSendShielded": true,
+      "canShield": true,
+      "canUnshield": true,
+      "canSwapPublic": true,
+      "canSwapShielded": true,
+      "canRelayAdapt": true
+    },
+    "Arbitrum": {
+      "canSendPublic": true,
+      "canSendShielded": true,
+      "canShield": true,
+      "canUnshield": true,
+      "canSwapPublic": true,
+      "canSwapShielded": true,
+      "canRelayAdapt": true
+    }
+  },
+  "networkProvidersConfig": {},
+  "networkProvidersConfigArchiveNodes": {}
+}

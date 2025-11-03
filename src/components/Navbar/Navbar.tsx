@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ChainSelector from "./ChainSelector";
+import ConnectButton from "../ConnectButton/ConnectButton";
 
 interface NavbarProps {
   showSearch?: boolean;
@@ -34,13 +35,14 @@ const Navbar: React.FC<NavbarProps> = ({ showSearch = true }) => {
               </span>
             </Link>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
             <ChainSelector />
+            <ConnectButton />
             <a
               href={process.env.REACT_APP_GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-4 text-gray-600 hover:text-gray-900 cursor-pointer"
+              className="text-gray-600 hover:text-gray-900 cursor-pointer"
             >
               <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
                 <path

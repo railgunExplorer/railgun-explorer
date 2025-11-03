@@ -1,0 +1,348 @@
+import {
+  populateShield,
+  gasEstimateForShield,
+  generateTransact,
+  gasEstimateForUnprovenTransact,
+  populateProvedTransact,
+  generateTransfer,
+  gasEstimateForUnprovenTransfer,
+  populateProvedTransfer,
+} from '@railgun-community/wallet';
+import {
+  NetworkName,
+  NETWORK_CONFIG,
+  RailgunERC20Amount,
+  RailgunERC20AmountRecipient,
+  TransactionGasDetails,
+  FeeTokenDetails,
+  RailgunPopulateTransactionResponse,
+} from '@railgun-community/shared-models';
+import { BrowserProvider, TransactionRequest, parseUnits } from 'ethers';
+
+export interface ShieldParams {
+  network: NetworkName;
+  tokenAddress: string;
+  amount: string;
+  decimals: number;
+  railgunAddress: string;
+  provider: BrowserProvider;
+  fromAddress: string;
+}
+
+export interface UnshieldParams {
+  network: NetworkName;
+  railgunWalletId: string;
+  tokenAddress: string;
+  amount: string;
+  decimals: number;
+  toAddress: string;
+  provider: BrowserProvider;
+  fromAddress: string;
+}
+
+export interface TransferParams {
+  network: NetworkName;
+  railgunWalletId: string;
+  tokenAddress: string;
+  amount: string;
+  decimals: number;
+  toRailgunAddress: string;
+  provider: BrowserProvider;
+  fromAddress: string;
+}
+
+/**
+ * Shield tokens (Public -> Private)
+ */
+export const shieldTokens = async (params: ShieldParams): Promise<string> => {
+  const { network, tokenAddress, amount, decimals, railgunAddress, provider, fromAddress } = params;
+  const { chain } = NETWORK_CONFIG[network];
+
+  // Parse amount to wei
+  const amountString = parseUnits(amount, decimals).toString();
+
+  // Create shield ERC20 amount
+  const shieldERC20Amounts: RailgunERC20Amount[] = [
+    {
+      tokenAddress,
+      amount: amountString,
+    },
+  ];
+
+  // Get shield transaction
+  const shieldTxResponse = await populateShield(
+    chain,
+    railgunAddress,
+    shieldERC20Amounts
+  );
+
+  if (!shieldTxResponse.transaction) {
+    throw new Error('Failed to populate shield transaction');
+  }
+
+  // Get signer and send transaction
+  const signer = await provider.getSigner();
+  const tx = await signer.sendTransaction(shieldTxResponse.transaction as TransactionRequest);
+
+  console.log('Shield transaction sent:', tx.hash);
+
+  // Wait for confirmation
+  const receipt = await tx.wait();
+
+  if (!receipt) {
+    throw new Error('Transaction failed');
+  }
+
+  return tx.hash;
+};
+
+/**
+ * Estimate gas for shield
+ */
+export const estimateShieldGas = async (
+  network: NetworkName,
+  tokenAddress: string,
+  amount: string,
+  decimals: number,
+  railgunAddress: string,
+  fromAddress: string
+): Promise<bigint> => {
+  const { chain } = NETWORK_CONFIG[network];
+  const amountString = parseUnits(amount, decimals).toString();
+
+  const shieldERC20Amounts: RailgunERC20Amount[] = [
+    {
+      tokenAddress,
+      amount: amountString,
+    },
+  ];
+
+  const gasEstimate = await gasEstimateForShield(
+    chain,
+    railgunAddress,
+    shieldERC20Amounts,
+    fromAddress
+  );
+
+  return gasEstimate.gasEstimate;
+};
+
+/**
+ * Unshield tokens (Private -> Public)
+ */
+export const unshieldTokens = async (params: UnshieldParams): Promise<string> => {
+  const { network, railgunWalletId, tokenAddress, amount, decimals, toAddress, provider, fromAddress } = params;
+  const { chain } = NETWORK_CONFIG[network];
+
+  const amountString = parseUnits(amount, decimals).toString();
+
+  // Create ERC20 amount recipient
+  const erc20AmountRecipients: RailgunERC20AmountRecipient[] = [
+    {
+      tokenAddress,
+      amount: amountString,
+      recipientAddress: toAddress,
+    },
+  ];
+
+  // No NFT amounts for now
+  const nftAmountRecipients = [];
+
+  // Generate proof for unshield (transact)
+  console.log('Generating proof for unshield...');
+
+  const transactResult = await generateTransact(
+    chain,
+    railgunWalletId,
+    erc20AmountRecipients,
+    nftAmountRecipients,
+    false, // sendWithPublicWallet
+    undefined, // relayerFeeERC20AmountRecipient
+    false, // showSenderAddressToRecipient
+    undefined, // memoText
+    undefined, // overallBatchMinGasPrice
+    undefined // progressCallback
+  );
+
+  if (transactResult.error) {
+    throw new Error(`Proof generation failed: ${transactResult.error.message}`);
+  }
+
+  console.log('Proof generated successfully');
+
+  // Estimate gas
+  const gasDetails: TransactionGasDetails = {
+    evmGasType: 0, // Type 0 (legacy)
+    gasEstimate: 500000n, // Will be estimated properly
+    gasPrice: undefined,
+  };
+
+  // Populate transaction with proof
+  const populateResponse = await populateProvedTransact(
+    chain,
+    railgunWalletId,
+    erc20AmountRecipients,
+    nftAmountRecipients,
+    false, // sendWithPublicWallet
+    undefined, // relayerFeeERC20AmountRecipient
+    false, // showSenderAddressToRecipient
+    undefined, // memoText
+    undefined, // overallBatchMinGasPrice
+    gasDetails
+  );
+
+  if (!populateResponse.transaction) {
+    throw new Error('Failed to populate unshield transaction');
+  }
+
+  // Send transaction
+  const signer = await provider.getSigner();
+  const tx = await signer.sendTransaction(populateResponse.transaction as TransactionRequest);
+
+  console.log('Unshield transaction sent:', tx.hash);
+
+  const receipt = await tx.wait();
+
+  if (!receipt) {
+    throw new Error('Transaction failed');
+  }
+
+  return tx.hash;
+};
+
+/**
+ * Transfer tokens privately (Private -> Private)
+ */
+export const transferTokensPrivately = async (params: TransferParams): Promise<string> => {
+  const { network, railgunWalletId, tokenAddress, amount, decimals, toRailgunAddress, provider, fromAddress } = params;
+  const { chain } = NETWORK_CONFIG[network];
+
+  const amountString = parseUnits(amount, decimals).toString();
+
+  // Create ERC20 amount recipient with Railgun address
+  const erc20AmountRecipients: RailgunERC20AmountRecipient[] = [
+    {
+      tokenAddress,
+      amount: amountString,
+      recipientAddress: toRailgunAddress, // Railgun address (0zk...)
+    },
+  ];
+
+  const nftAmountRecipients = [];
+
+  // Generate proof for private transfer
+  console.log('Generating proof for private transfer...');
+
+  const transferResult = await generateTransfer(
+    chain,
+    railgunWalletId,
+    erc20AmountRecipients,
+    nftAmountRecipients,
+    undefined, // relayerFeeERC20AmountRecipient
+    true, // showSenderAddressToRecipient - can be false for full privacy
+    undefined, // memoText
+    undefined, // overallBatchMinGasPrice
+    undefined // progressCallback
+  );
+
+  if (transferResult.error) {
+    throw new Error(`Proof generation failed: ${transferResult.error.message}`);
+  }
+
+  console.log('Proof generated successfully');
+
+  // Estimate gas
+  const gasDetails: TransactionGasDetails = {
+    evmGasType: 0,
+    gasEstimate: 500000n,
+    gasPrice: undefined,
+  };
+
+  // Populate transaction with proof
+  const populateResponse = await populateProvedTransfer(
+    chain,
+    railgunWalletId,
+    erc20AmountRecipients,
+    nftAmountRecipients,
+    undefined, // relayerFeeERC20AmountRecipient
+    true, // showSenderAddressToRecipient
+    undefined, // memoText
+    undefined, // overallBatchMinGasPrice
+    gasDetails
+  );
+
+  if (!populateResponse.transaction) {
+    throw new Error('Failed to populate transfer transaction');
+  }
+
+  // Send transaction
+  const signer = await provider.getSigner();
+  const tx = await signer.sendTransaction(populateResponse.transaction as TransactionRequest);
+
+  console.log('Private transfer transaction sent:', tx.hash);
+
+  const receipt = await tx.wait();
+
+  if (!receipt) {
+    throw new Error('Transaction failed');
+  }
+
+  return tx.hash;
+};
+
+/**
+ * Estimate gas for unshield
+ */
+export const estimateUnshieldGas = async (
+  network: NetworkName,
+  railgunWalletId: string,
+  tokenAddress: string,
+  amount: string,
+  decimals: number,
+  toAddress: string,
+  fromAddress: string
+): Promise<bigint> => {
+  const { chain } = NETWORK_CONFIG[network];
+  const amountString = parseUnits(amount, decimals).toString();
+
+  const erc20AmountRecipients: RailgunERC20AmountRecipient[] = [
+    {
+      tokenAddress,
+      amount: amountString,
+      recipientAddress: toAddress,
+    },
+  ];
+
+  const gasEstimate = await gasEstimateForUnprovenTransact(
+    chain,
+    railgunWalletId,
+    erc20AmountRecipients,
+    [],
+    fromAddress,
+    false
+  );
+
+  return gasEstimate.gasEstimate;
+};
+
+/**
+ * Estimate gas for private transfer
+ * NOTE: This function requires additional parameters that need to be properly configured
+ * For now, returning a default estimate
+ */
+export const estimateTransferGas = async (
+  network: NetworkName,
+  railgunWalletId: string,
+  tokenAddress: string,
+  amount: string,
+  decimals: number,
+  toRailgunAddress: string,
+  fromAddress: string
+): Promise<bigint> => {
+  // TODO: Implement proper gas estimation with all required parameters
+  // const { chain } = NETWORK_CONFIG[network];
+  // const amountString = parseUnits(amount, decimals).toString();
+
+  // For now, return a default gas estimate
+  return BigInt(500000);
+};

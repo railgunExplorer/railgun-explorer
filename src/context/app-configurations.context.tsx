@@ -8,13 +8,14 @@ const AppConfigurationsContext = createContext<
   | (RailgunConfigurations & {
       supportedNetworks: NetworkName[];
       getInitialQueryParam: <T extends string | null>(paramName: string) => T;
+      isLoading: boolean;
     })
   | null
 >(null);
 
 export const useAppConfigurations = () => {
   const context = useContext(AppConfigurationsContext);
-  if (!context) {
+  if (context === null) {
     throw new Error(
       "useAppConfigurations must be used within a AppConfigurationsProvider"
     );
@@ -35,10 +36,12 @@ export const AppConfigurationsProvider: React.FC<{
     NetworkName.Polygon,
   ];
 
+  const value = data
+    ? { ...data, supportedNetworks, getInitialQueryParam, isLoading: false }
+    : { supportedNetworks, getInitialQueryParam, isLoading: true } as any;
+
   return (
-    <AppConfigurationsContext.Provider
-      value={{ ...data, supportedNetworks, getInitialQueryParam }}
-    >
+    <AppConfigurationsContext.Provider value={value}>
       {isLoading ? null : children}
     </AppConfigurationsContext.Provider>
   );
