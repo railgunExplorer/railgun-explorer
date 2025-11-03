@@ -1,43 +1,43 @@
 # Railgun Wallet Implementation - Status
 
-## ✅ Erfolgreich Implementiert
+## ✅ Successfully Implemented
 
-### 1. Wallet-Management
-- **Deterministisches Wallet aus MetaMask**: ✅
-  - Private Key wird aus MetaMask-Signatur abgeleitet
-  - Gleiche MetaMask = Gleiche Railgun-Adresse (immer!)
-  - Persistierung im LocalStorage
-  - Automatisches Laden bestehender Wallets
+### 1. Wallet Management
+- **Deterministic Wallet from MetaMask**: ✅
+  - Private Key is derived from MetaMask signature
+  - Same MetaMask = Same Railgun address (always!)
+  - Persistence in LocalStorage
+  - Automatic loading of existing wallets
 
-### 2. UI-Komponenten
+### 2. UI Components
 - **My Wallet Screen**: ✅
-  - MetaMask Verbindung
-  - Railgun Wallet Aktivierung
-  - Tab-Navigation (Balances / Shield / Send)
-  - Network-Support-Warnung
+  - MetaMask connection
+  - Railgun Wallet activation
+  - Tab navigation (Balances / Shield / Send)
+  - Network support warning
 
-- **Balance-Anzeige**: ✅
-  - Zeigt private Railgun Balances
-  - Refresh-Funktion
-  - Token-Liste mit Formatierung
+- **Balance Display**: ✅
+  - Shows private Railgun balances
+  - Refresh function
+  - Token list with formatting
 
 - **Shield UI**: ✅
-  - Token-Adresse eingeben
-  - Token-Info laden (Symbol, Decimals, Balance)
-  - Amount mit MAX Button
-  - Transaction-Status-Anzeige
+  - Enter token address
+  - Load token info (Symbol, Decimals, Balance)
+  - Amount with MAX button
+  - Transaction status display
 
 - **Send/Unshield UI**: ✅
-  - Toggle zwischen Private Transfer und Unshield
-  - Address-Validierung (0zk... für Railgun, 0x... für Ethereum)
-  - Token-Metadaten laden
-  - Transaction-Links
+  - Toggle between Private Transfer and Unshield
+  - Address validation (0zk... for Railgun, 0x... for Ethereum)
+  - Load token metadata
+  - Transaction links
 
 ### 3. Services & Utilities
 - **Token Metadata Service**: ✅
-  - Lädt Symbol, Name, Decimals aus Contract
-  - Caching (24h) für Performance
-  - Balance-Abfrage
+  - Loads Symbol, Name, Decimals from Contract
+  - Caching (24h) for performance
+  - Balance queries
   - Native Token Support (ETH, MATIC, BNB)
 
 - **Network Utilities**: ✅
@@ -47,80 +47,80 @@
   - Transaction URLs
 
 - **Wallet Context**: ✅
-  - Zentrale State-Verwaltung
-  - Balance Updates mit Callbacks
-  - Wallet Aktivierung/Deaktivierung
-  - Balance Refresh
+  - Central state management
+  - Balance updates with callbacks
+  - Wallet activation/deactivation
+  - Balance refresh
 
 ### 4. Build & Deployment
-- ✅ **Kompiliert erfolgreich!**
-- ✅ TypeScript-Fehler behoben
-- ✅ Alle Dependencies korrekt
+- ✅ **Compiles successfully!**
+- ✅ TypeScript errors fixed
+- ✅ All dependencies correct
 
-## ⚠️ Teilweise Implementiert (Platzhalter)
+## ⚠️ Partially Implemented (Placeholders)
 
 ### Transaction Services
-Die Railgun-Transaktionen sind als Platzhalter implementiert, die hilfreiche Fehlermeldungen zeigen:
+The Railgun transactions are implemented as placeholders that show helpful error messages:
 
-- **Shield (Public → Private)**: Basis-Struktur vorhanden, benötigt Shield Private Key
-- **Unshield (Private → Public)**: Zeigt Fehlermeldung mit Implementierungshinweisen
-- **Private Transfer**: Zeigt Fehlermeldung mit Implementierungshinweisen
+- **Shield (Public → Private)**: Basic structure present, requires Shield Private Key
+- **Unshield (Private → Public)**: Shows error message with implementation hints
+- **Private Transfer**: Shows error message with implementation hints
 
-## 📋 Was noch zu tun ist
+## 📋 What Still Needs to Be Done
 
-Siehe **RAILGUN_WALLET_IMPLEMENTATION.md** für detaillierte Implementierungsanweisungen.
+See **RAILGUN_WALLET_IMPLEMENTATION.md** for detailed implementation instructions.
 
-### Kritische Komponenten:
-1. **Shield Private Key Ableitung**
-   - Muss aus Wallet-Mnemonic abgeleitet werden
-   - Benötigt zusätzliche Kryptographie
+### Critical Components:
+1. **Shield Private Key Derivation**
+   - Must be derived from wallet mnemonic
+   - Requires additional cryptography
 
 2. **Proof Generation**
-   - Für private Transfers benötigt
-   - Für Unshield benötigt
-   - Dauert 10-30 Sekunden
+   - Required for private transfers
+   - Required for unshield
+   - Takes 10-30 seconds
 
 3. **POI (Proof of Innocence)**
-   - Compliance-Feature von Railgun
-   - Benötigt vor Transaktionen
-   - POI Nodes sind bereits in Config
+   - Compliance feature of Railgun
+   - Required before transactions
+   - POI Nodes are already in config
 
-## 🚀 Wie du weitermachen kannst
+## 🚀 How You Can Continue
 
-### Option 1: Development ohne echte Transaktionen
-Die App ist **jetzt schon nutzbar** für:
-- Wallet-Verwaltung
-- Balance-Anzeige (wenn Balances vorhanden)
-- UI-Tests
-- MetaMask-Integration
+### Option 1: Development Without Real Transactions
+The app is **already usable** for:
+- Wallet management
+- Balance display (if balances exist)
+- UI tests
+- MetaMask integration
 
-### Option 2: Vollständige Transaction-Implementierung
-1. Studiere **RAILGUN_WALLET_IMPLEMENTATION.md**
-2. Schaue dir Railway Wallet als Referenz an
-3. Implementiere Schritt für Schritt:
-   - Zuerst Shield
-   - Dann Private Transfer
-   - Zuletzt Unshield
+### Option 2: Complete Transaction Implementation
+1. Study **RAILGUN_WALLET_IMPLEMENTATION.md**
+2. Look at Railway Wallet as reference
+3. Implement step by step:
+   - First Shield
+   - Then Private Transfer
+   - Finally Unshield
 
-### Option 3: Testnet-Testing
-1. Verwende Sepolia oder Polygon Amoy
-2. Hole dir Testnet-Tokens
-3. Teste Shield-Funktion (sobald implementiert)
+### Option 3: Testnet Testing
+1. Use Sepolia or Polygon Amoy
+2. Get testnet tokens
+3. Test Shield function (once implemented)
 
-## 📦 Neue Dateien
+## 📦 New Files
 
 ```
 src/
 ├── services/
-│   ├── railgun-wallet.service.ts              # Wallet-Erstellung & -Verwaltung
-│   ├── railgun-transaction.service.ts         # Transaction Platzhalter
-│   ├── railgun-transaction.service.ts.backup  # Alte Version (für Referenz)
-│   └── token-metadata.service.ts              # Token-Info Laden
+│   ├── railgun-wallet.service.ts              # Wallet creation & management
+│   ├── railgun-transaction.service.ts         # Transaction placeholders
+│   ├── railgun-transaction.service.ts.backup  # Old version (for reference)
+│   └── token-metadata.service.ts              # Token info loading
 ├── context/
 │   └── railgun-wallet.context.tsx             # Wallet State Management
 ├── components/
 │   ├── RailgunBalances/
-│   │   └── RailgunBalances.tsx                # Balance-Anzeige
+│   │   └── RailgunBalances.tsx                # Balance display
 │   ├── ShieldTokens/
 │   │   └── ShieldTokens.tsx                   # Shield UI
 │   └── SendTokens/
@@ -128,43 +128,43 @@ src/
 └── utils/
     └── network.utils.ts                       # Network Utilities
 
-Dokumentation:
-├── RAILGUN_WALLET_IMPLEMENTATION.md           # Implementierungsguide
-└── README_WALLET.md                          # Diese Datei
+Documentation:
+├── RAILGUN_WALLET_IMPLEMENTATION.md           # Implementation guide
+└── README_WALLET.md                          # This file
 ```
 
-## 🎯 Nächste Schritte (Empfohlen)
+## 🎯 Next Steps (Recommended)
 
-1. **Teste die App lokal**:
+1. **Test the app locally**:
    ```bash
    npm start
    ```
 
-2. **Verbinde MetaMask**: Wallet sollte sich aktivieren lassen
+2. **Connect MetaMask**: Wallet should be able to activate
 
-3. **Schaue dir die UI an**: Alle Komponenten sollten sichtbar sein
+3. **Look at the UI**: All components should be visible
 
-4. **Studiere die Dokumentation**: RAILGUN_WALLET_IMPLEMENTATION.md
+4. **Study the documentation**: RAILGUN_WALLET_IMPLEMENTATION.md
 
-5. **Wenn du Transactions implementieren willst**:
-   - Starte mit Railway Wallet als Referenz
-   - Implementiere zuerst nur Shield
-   - Teste auf Testnet!
+5. **If you want to implement transactions**:
+   - Start with Railway Wallet as reference
+   - Implement Shield first only
+   - Test on testnet!
 
-## 💡 Wichtige Hinweise
+## 💡 Important Notes
 
-- **Nie auf Mainnet testen** ohne vollständige Tests auf Testnet!
-- **POI ist wichtig** für Railgun-Compliance
-- **Proof Generation dauert** 10-30 Sekunden (normal!)
-- **Railway Wallet ist die beste Referenz** für vollständige Implementation
-- **Die App kompiliert und läuft** - Transaktionen sind opt-in!
+- **Never test on mainnet** without complete tests on testnet!
+- **POI is important** for Railgun compliance
+- **Proof generation takes** 10-30 seconds (normal!)
+- **Railway Wallet is the best reference** for complete implementation
+- **The app compiles and runs** - transactions are opt-in!
 
 ## 🤝 Support
 
-Wenn du Fragen hast:
-1. Schaue in RAILGUN_WALLET_IMPLEMENTATION.md
-2. Studiere Railway Wallet Code
+If you have questions:
+1. Look in RAILGUN_WALLET_IMPLEMENTATION.md
+2. Study Railway Wallet code
 3. Railgun Discord: https://discord.gg/railgun
 4. Railgun Docs: https://docs.railgun.org/
 
-**Viel Erfolg mit deiner Railgun Wallet!** 🚀
+**Good luck with your Railgun Wallet!** 🚀

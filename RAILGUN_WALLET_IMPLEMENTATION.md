@@ -1,46 +1,46 @@
 # Railgun Wallet Implementation Guide
 
-## ✅ Was bereits implementiert ist
+## ✅ What Is Already Implemented
 
-### 1. Wallet-Management
-- **Deterministisches Wallet aus MetaMask**: Der Private Key wird aus der MetaMask-Signatur abgeleitet
-- **Persistierung**: Wallet-Info wird im LocalStorage gespeichert
-- **Context Management**: Zentrales State Management für Railgun Wallet
+### 1. Wallet Management
+- **Deterministic Wallet from MetaMask**: The private key is derived from the MetaMask signature
+- **Persistence**: Wallet info is stored in LocalStorage
+- **Context Management**: Central state management for Railgun Wallet
 
-### 2. UI-Komponenten
-- **RailgunBalances**: Zeigt private Token-Balances an
-- **ShieldTokens**: UI zum Shielding von Tokens (Public → Private)
-- **SendTokens**: UI für private Transfers und Unshielding
+### 2. UI Components
+- **RailgunBalances**: Shows private token balances
+- **ShieldTokens**: UI for shielding tokens (Public → Private)
+- **SendTokens**: UI for private transfers and unshielding
 
 ### 3. Utilities
 - **Network Mapping**: chainId → Railgun NetworkName
-- **Token Metadata Service**: Lädt und cached Token-Informationen
-- **Block Explorer Links**: Generiert Links zu Transaktionen
+- **Token Metadata Service**: Loads and caches token information
+- **Block Explorer Links**: Generates links to transactions
 
-## ⚠️ Was noch zu implementieren ist
+## ⚠️ What Still Needs to Be Implemented
 
-Die Railgun Wallet API (@railgun-community/wallet) ist sehr komplex und benötigt spezifische Parameter, die von der Anwendung abhängen. Die folgenden Funktionen müssen noch korrekt implementiert werden:
+The Railgun Wallet API (@railgun-community/wallet) is very complex and requires specific parameters that depend on the application. The following functions still need to be correctly implemented:
 
 ### 1. Shield (Public → Private)
 
-**Aktuelle Implementierung**: `src/services/railgun-transaction.service.ts:shieldTokens()`
+**Current Implementation**: `src/services/railgun-transaction.service.ts:shieldTokens()`
 
-**Was fehlt**:
-- Korrekte Verwendung von `populateShield` mit allen Parametern
+**What's Missing**:
+- Correct usage of `populateShield` with all parameters
 - POI (Proof of Innocence) Management
 - TXIDVersion Handling
 
-**Benötigte Railgun API**:
+**Required Railgun API**:
 ```typescript
 import { populateShield, TXIDVersion } from '@railgun-community/wallet';
 
-// Shield benötigt:
-const txidVersion = TXIDVersion.V2_PoseidonMerkle; // oder V3
+// Shield requires:
+const txidVersion = TXIDVersion.V2_PoseidonMerkle; // or V3
 const shieldTx = await populateShield(
   txidVersion,
   networkName,
   railgunAddress,
-  shieldPrivateKey, // Aus Wallet ableiten
+  shieldPrivateKey, // Derive from wallet
   erc20AmountRecipients,
   nftAmountRecipients
 );
@@ -48,15 +48,15 @@ const shieldTx = await populateShield(
 
 ### 2. Private Transfer (Private → Private)
 
-**Aktuelle Implementierung**: `src/services/railgun-transaction.service.ts:transferTokensPrivately()`
+**Current Implementation**: `src/services/railgun-transaction.service.ts:transferTokensPrivately()`
 
-**Was fehlt**:
-- Proof Generation mit `generateTransferProof`
-- Transaction Population mit `populateProvedTransfer`
+**What's Missing**:
+- Proof Generation with `generateTransferProof`
+- Transaction Population with `populateProvedTransfer`
 - Encryption Key Management
 - Memo Text Support
 
-**Benötigte Railgun API**:
+**Required Railgun API**:
 ```typescript
 import { generateTransferProof, populateProvedTransfer } from '@railgun-community/wallet';
 
@@ -84,109 +84,109 @@ const populatedTx = await populateProvedTransfer(...);
 
 ### 3. Unshield (Private → Public)
 
-**Aktuelle Implementierung**: `src/services/railgun-transaction.service.ts:unshieldTokens()`
+**Current Implementation**: `src/services/railgun-transaction.service.ts:unshieldTokens()`
 
-**Was fehlt**:
-- Proof Generation mit `generateUnshieldProof`
-- Transaction Population mit `populateProvedUnshield`
+**What's Missing**:
+- Proof Generation with `generateUnshieldProof`
+- Transaction Population with `populateProvedUnshield`
 - Gas Estimation
 - POI Handling
 
-**Benötigte Railgun API**:
+**Required Railgun API**:
 ```typescript
 import { generateUnshieldProof, populateProvedUnshield } from '@railgun-community/wallet';
 
-// Similar to transfer, aber mit Unshield-spezifischen Parametern
+// Similar to transfer, but with Unshield-specific parameters
 ```
 
-## 🔑 Wichtige Konzepte
+## 🔑 Important Concepts
 
 ### TXIDVersion
-Railgun verwendet verschiedene TXID Versionen:
-- `TXIDVersion.V2_PoseidonMerkle` - Für ältere Transaktionen
-- `TXIDVersion.V3_PoseidonMerkle` - Neueste Version
+Railgun uses different TXID versions:
+- `TXIDVersion.V2_PoseidonMerkle` - For older transactions
+- `TXIDVersion.V3_PoseidonMerkle` - Latest version
 
 ### Encryption Key
-Der Encryption Key wird benötigt um:
-- Proof Generation zu ermöglichen
-- Wallet-Daten zu verschlüsseln
-- Private Transaktionen zu signieren
+The Encryption Key is required to:
+- Enable proof generation
+- Encrypt wallet data
+- Sign private transactions
 
-**Aktuell**: Hardcoded als `0101...`
-**Sollte sein**: Aus MetaMask-Signatur abgeleitet (bereits in wallet service implementiert)
+**Currently**: Hardcoded as `0101...`
+**Should be**: Derived from MetaMask signature (already implemented in wallet service)
 
 ### POI (Proof of Innocence)
-Railgun benötigt POI für:
-- Anti-Geldwäsche Compliance
-- Privacy-preserving Compliance
+Railgun requires POI for:
+- Anti-money laundering compliance
+- Privacy-preserving compliance
 
-**Implementierung benötigt**:
-- POI Node URLs (bereits in Config)
+**Implementation required**:
+- POI Node URLs (already in config)
 - POI List Management
-- POI Proof Generation vor Transaktionen
+- POI Proof generation before transactions
 
 ### Gas Estimation
-Railgun-Transaktionen benötigen spezielle Gas-Schätzungen:
+Railgun transactions require special gas estimations:
 - `gasEstimateForShield`
 - `gasEstimateForUnprovenTransfer`
 - `gasEstimateForUnprovenUnshield`
 
-## 📚 Ressourcen
+## 📚 Resources
 
-### Offizielle Railgun Dokumentation
+### Official Railgun Documentation
 - [Railgun Wallet SDK](https://github.com/Railgun-Community/wallet)
 - [Railgun Docs](https://docs.railgun.org/)
-- [Railway Wallet (Referenz-Implementation)](https://github.com/Railway-Wallet/Railway-Wallet)
+- [Railway Wallet (Reference Implementation)](https://github.com/Railway-Wallet/Railway-Wallet)
 
-### Beispiel-Code
-Die beste Referenz ist die Railway Wallet Implementation:
+### Example Code
+The best reference is the Railway Wallet implementation:
 - [Transfer Logic](https://github.com/Railway-Wallet/Railway-Wallet/tree/main/src/services/transactions)
 - [POI Management](https://github.com/Railway-Wallet/Railway-Wallet/tree/main/src/services/poi)
 
-## 🚀 Nächste Schritte
+## 🚀 Next Steps
 
-1. **TXIDVersion konfigurieren**
-   - Entscheiden welche Version verwendet werden soll
-   - Konstante definieren
+1. **Configure TXIDVersion**
+   - Decide which version to use
+   - Define constant
 
 2. **Encryption Key Management**
-   - Wallet Service anpassen um Key bereitzustellen
-   - Sicher aus MetaMask-Signatur ableiten
+   - Adapt wallet service to provide key
+   - Securely derive from MetaMask signature
 
 3. **POI Integration**
-   - POI Node URLs konfigurieren
-   - POI List Management implementieren
-   - POI Proofs vor Transaktionen generieren
+   - Configure POI Node URLs
+   - Implement POI List Management
+   - Generate POI proofs before transactions
 
 4. **Proof Generation**
-   - `generateTransferProof` korrekt aufrufen
-   - `generateUnshieldProof` korrekt aufrufen
-   - Progress Callbacks implementieren
+   - Call `generateTransferProof` correctly
+   - Call `generateUnshieldProof` correctly
+   - Implement progress callbacks
 
 5. **Transaction Population**
-   - `populateProvedTransfer` mit korrekten Parametern
-   - `populateProvedUnshield` mit korrekten Parametern
-   - Gas Details korrekt setzen
+   - `populateProvedTransfer` with correct parameters
+   - `populateProvedUnshield` with correct parameters
+   - Set gas details correctly
 
 6. **Testing**
-   - Testnet verwenden (Sepolia, Polygon Amoy)
-   - Kleine Beträge testen
-   - Error Handling verbessern
+   - Use testnet (Sepolia, Polygon Amoy)
+   - Test small amounts
+   - Improve error handling
 
-## 💡 Tipps
+## 💡 Tips
 
-1. **Starte mit Shield**: Das ist die einfachste Operation
-2. **Verwende Railway Wallet als Referenz**: Der Code ist open source
-3. **Teste auf Testnet**: Verwende Sepolia oder Polygon Amoy
-4. **Logs aktivieren**: Railgun SDK hat Debug-Logs
-5. **Proof Generation dauert**: 10-30 Sekunden sind normal
+1. **Start with Shield**: This is the easiest operation
+2. **Use Railway Wallet as reference**: The code is open source
+3. **Test on testnet**: Use Sepolia or Polygon Amoy
+4. **Enable logs**: Railgun SDK has debug logs
+5. **Proof generation takes time**: 10-30 seconds is normal
 
 ## 🔧 Temporary Workaround
 
-Für Development/Testing kannst du:
-1. Nur die UI verwenden ohne echte Transaktionen
-2. Mock-Daten für Balances verwenden
-3. Transaktionen als "Coming Soon" markieren
-4. Fokus auf Wallet-Management und UI legen
+For development/testing you can:
+1. Use only the UI without real transactions
+2. Use mock data for balances
+3. Mark transactions as "Coming Soon"
+4. Focus on wallet management and UI
 
-Die komplette Railgun-Integration ist ein größeres Projekt das Zeit benötigt!
+The complete Railgun integration is a larger project that takes time!
